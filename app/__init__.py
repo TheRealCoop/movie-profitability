@@ -1,6 +1,6 @@
 from os import environ
 
-import pandas
+import pandas as pd
 from flask import Flask
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -21,7 +21,7 @@ def create_app():
 def import_db(app):
     '''Imports .csv of movie metadata to database'''
     declarative_base().metadata.create_all(DB_ENGINE)
-    dataframe = pandas.read_csv(MOVIE_CSV_FILE_NAME)
+    dataframe = pd.read_csv(MOVIE_CSV_FILE_NAME)
     try:
         dataframe.to_sql(con=DB_ENGINE, name='movies', if_exists='fail')
     except ValueError:
