@@ -46,14 +46,12 @@ def desc_num_to_list(dataframe, column, num):
 def combine_columns(dataframe, new_col_name):
     '''Takes a `dataframe`, combines all the columns in ACTOR_COLUMNS into a
     `new_col_name` with the MEASUREMENT's original values'''
-    new_df = pd.DataFrame([], columns=[new_col_name, MEASUREMENT])
-
-    for col_name in ACTOR_COLUMNS:
-        renamed_df = dataframe[[col_name, MEASUREMENT]]\
-            .rename({col_name: new_col_name}, axis='columns')
-        new_df = new_df.append(renamed_df, ignore_index=True)
-
-    return new_df
+    return pd.melt(
+        dataframe,
+        id_vars=[MEASUREMENT],
+        value_vars=ACTOR_COLUMNS,
+        value_name=new_col_name
+    )[[MEASUREMENT, new_col_name]]
 
 
 def split_column(dataframe, column, new_column_name):
